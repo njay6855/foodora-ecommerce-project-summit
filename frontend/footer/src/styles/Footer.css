@@ -1,0 +1,224 @@
+/* Import theme variables */
+@import url('./variables.css');
+
+/* Footer Main Container - Matching Navbar Design Pattern */
+.footer {
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  padding: var(--spacing-xxl) 0 var(--spacing-md);
+  border-top: 4px solid var(--border-color);
+  width: 100%;
+  box-shadow: var(--shadow-top);
+  font-family: var(--font-family);
+}
+
+.footer-title {
+  color: var(--primary-text);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+}
+
+.footer-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+
+.footer-text {
+  color: var(--primary-text);
+  opacity: 0.8;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-link {
+  color: var(--primary-text);
+  opacity: 0.8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+  display: inline-block;
+  position: relative;
+}
+
+.footer-link:hover {
+  color: var(--hover-color);
+  opacity: 1;
+  text-decoration: none;
+  transform: translateX(5px);
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--hover-color);
+  transition: width var(--transition-fast);
+}
+
+.footer-link:hover::before {
+  width: 100%;
+}
+
+/* Social Links - Matching navbar button style */
+.social-links {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--secondary-bg);
+  color: var(--primary-text);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-full);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.social-link:hover {
+  background-color: var(--accent-color);
+  color: var(--secondary-bg);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Contact Info */
+.contact-info {
+  font-size: 0.95rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  color: var(--primary-text);
+  opacity: 0.8;
+}
+
+.contact-item i {
+  color: var(--accent-color);
+  margin-right: 0.75rem;
+  margin-top: 0.2rem;
+  font-size: 1rem;
+  min-width: 16px;
+}
+
+/* Footer Divider */
+.footer-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  margin: var(--spacing-xl) 0 var(--spacing-lg);
+  opacity: 0.4;
+}
+
+/* Bottom Section */
+.footer-copyright {
+  margin: 0;
+  color: var(--primary-text);
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.footer-legal {
+  text-align: right;
+}
+
+.footer-legal .footer-link {
+  font-size: 0.9rem;
+  color: var(--primary-text);
+  opacity: 0.7;
+}
+
+.footer-legal .footer-link:hover {
+  color: var(--hover-color);
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+  }
+  
+  .footer-title {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .footer-text {
+    font-size: 0.9rem;
+  }
+  
+  .footer-legal {
+    text-align: center;
+    margin-top: var(--spacing-md);
+  }
+  
+  .footer-legal .footer-link {
+    display: block;
+    margin: var(--spacing-sm) 0;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .contact-item {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer {
+    padding: var(--spacing-lg) 0 var(--spacing-md);
+  }
+  
+  .social-links {
+    gap: var(--spacing-sm);
+  }
+  
+  .social-link {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  
+  .footer-title {
+    font-size: 1rem;
+  }
+  
+  .footer-text,
+  .footer-link,
+  .contact-item {
+    font-size: 0.85rem;
+  }
+}

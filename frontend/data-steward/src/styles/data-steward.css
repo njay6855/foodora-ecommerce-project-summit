@@ -1,0 +1,156 @@
+/* Data Steward Components Styling */
+:root {
+  --beige: #EDE0D4;
+  --olive-green: #6A994E;
+  --dark-brown: #432818;
+  --light-cream: #FEFAF6;
+}
+
+/* Dashboard Container */
+.steward-container {
+  background-color: var(--light-cream);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.steward-header {
+  color: var(--dark-brown);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.steward-error {
+  background-color: #fde8e8;
+  border: 1px solid #f8b4b4;
+  border-radius: 4px;
+  color: #c81e1e;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.steward-info {
+  background-color: var(--beige);
+  border: none;
+  border-radius: 4px;
+  color: var(--dark-brown);
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+/* Review Card Styles */
+.review-card {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(67, 40, 24, 0.1);
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+  box-shadow: 0 4px 12px rgba(67, 40, 24, 0.15);
+  transform: translateY(-2px);
+}
+
+.review-card-body {
+  padding: 1.5rem;
+}
+
+.review-card-title {
+  color: var(--dark-brown);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.review-status-badge {
+  background-color: #f0ad4e;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+}
+
+.review-content {
+  color: var(--dark-brown);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.review-detail {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-detail-label {
+  color: var(--dark-brown);
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.review-detail-value {
+  color: var(--dark-brown);
+}
+
+/* Image Gallery */
+.review-images {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-image {
+  border-radius: 4px;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Action Buttons */
+.steward-btn-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.steward-btn {
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.steward-btn-approve {
+  background-color: var(--olive-green);
+  color: white;
+}
+
+.steward-btn-approve:hover {
+  background-color: #5a8442;
+}
+
+.steward-btn-reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.steward-btn-reject:hover {
+  background-color: #c82333;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  color: var(--olive-green);
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.spinner-border {
+  height: 3rem;
+  width: 3rem;
+}

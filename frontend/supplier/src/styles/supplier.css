@@ -1,0 +1,295 @@
+/* Supplier Components Styling */
+:root {
+  --beige: #EDE0D4;
+  --olive-green: #6A994E;
+  --dark-brown: #432818;
+  --light-cream: #FEFAF6;
+}
+
+/* Container Styles */
+.supplier-container {
+  background-color: var(--light-cream);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* Product Card Styles */
+.product-card {
+  background-color: white;
+  border: 1px solid var(--beige);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(67, 40, 24, 0.05);
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 8px rgba(67, 40, 24, 0.1);
+  transform: translateY(-2px);
+}
+
+.product-card-body {
+  padding: 1.5rem;
+}
+
+.product-card-title {
+  color: var(--dark-brown);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.product-card-text {
+  color: var(--dark-brown);
+  margin-bottom: 1rem;
+}
+
+/* Status Badge Styles */
+.status-badge {
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+}
+
+.status-badge-approved {
+  background-color: var(--olive-green);
+  color: white;
+}
+
+.status-badge-pending {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.status-badge-rejected {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Form Control Styles */
+.supplier-form-group {
+  margin-bottom: 1rem;
+}
+
+.supplier-form-label {
+  color: var(--dark-brown);
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.supplier-form-control {
+  background-color: var(--light-cream);
+  border: 2px solid var(--beige);
+  border-radius: 4px;
+  color: var(--dark-brown);
+  padding: 0.5rem;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.supplier-form-control:focus {
+  border-color: var(--olive-green);
+  box-shadow: 0 0 0 2px rgba(106, 153, 78, 0.1);
+  outline: none;
+}
+
+/* Quantity Control Styles */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+.quantity-btn {
+  background-color: var(--beige);
+  border: none;
+  border-radius: 4px;
+  color: var(--dark-brown);
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: bold;
+  height: 3rem;
+  line-height: 1;
+  min-width: 3rem;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background-color: var(--olive-green);
+  color: white;
+}
+
+.quantity-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.quantity-input {
+  text-align: center;
+  width: 80px !important;
+  margin: 0 0.25rem;
+}
+
+input[type="number"].supplier-form-control {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"].supplier-form-control::-webkit-outer-spin-button,
+input[type="number"].supplier-form-control::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Price and Category Styles */
+.product-detail {
+  align-items: center;
+  color: var(--dark-brown);
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-detail-label {
+  font-weight: 600;
+}
+
+/* Button Styles */
+.supplier-btn {
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.supplier-btn-primary {
+  background-color: var(--olive-green);
+  color: white;
+}
+
+.supplier-btn-primary:hover {
+  background-color: #5a8442;
+  color: white;
+}
+
+.supplier-btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.supplier-btn-danger:hover {
+  background-color: #c82333;
+}
+
+.supplier-btn-secondary {
+  background-color: var(--beige);
+  color: var(--dark-brown);
+}
+
+.supplier-btn-secondary:hover {
+  background-color: #e0d0c1;
+  color: var(--dark-brown);
+}
+
+.supplier-btn-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* Product Form Styles */
+.product-form-card {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(67, 40, 24, 0.1);
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.product-form-title {
+  color: var(--dark-brown);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.product-form-section {
+  margin-bottom: 2rem;
+}
+
+textarea.supplier-form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+select.supplier-form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23432818' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.image-url-group {
+  background-color: var(--light-cream);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.image-url-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Dashboard Styles */
+.supplier-dashboard {
+  padding: 2rem 0;
+}
+
+.dashboard-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  color: var(--dark-brown);
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.empty-state {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(67, 40, 24, 0.05);
+  color: var(--dark-brown);
+  margin-top: 2rem;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  color: var(--olive-green);
+  margin: 3rem auto;
+}
+
+.error-message {
+  background-color: #fde8e8;
+  border: 1px solid #f8b4b4;
+  border-radius: 4px;
+  color: #c81e1e;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}

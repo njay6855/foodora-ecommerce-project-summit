@@ -1,0 +1,233 @@
+/* Footer Component Specific Styles */
+/* This file contains all footer-specific styling that matches the navbar design patterns */
+
+/* Import the color palette */
+@import url('./variables.css');
+
+/* Footer container with matching navbar styling */
+.footer {
+  background-color: var(--beige);
+  color: var(--dark-brown);
+  padding: 3rem 0 1rem;
+  border-top: 4px solid var(--olive-green);
+  width: 100%;
+  box-shadow: 0 -2px 4px rgba(67, 40, 24, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+/* Section titles matching navbar brand styling */
+.footer-title {
+  color: var(--dark-brown);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.footer-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--olive-green);
+}
+
+/* Content text */
+.footer-text {
+  color: var(--dark-brown);
+  opacity: 0.8;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Link lists */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+/* Links with hover effects matching navbar */
+.footer-link {
+  color: var(--dark-brown);
+  opacity: 0.8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.footer-link:hover {
+  color: var(--olive-green);
+  opacity: 1;
+  text-decoration: none;
+  transform: translateX(5px);
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--olive-green);
+  transition: width 0.2s ease;
+}
+
+.footer-link:hover::before {
+  width: 100%;
+}
+
+/* Social media links matching button styles */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--light-cream);
+  color: var(--dark-brown);
+  border: 2px solid var(--olive-green);
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(67, 40, 24, 0.1);
+}
+
+.social-link:hover {
+  background-color: var(--olive-green);
+  color: var(--light-cream);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(106, 153, 78, 0.3);
+}
+
+/* Contact information */
+.contact-info {
+  font-size: 0.95rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  color: var(--dark-brown);
+  opacity: 0.8;
+}
+
+.contact-item i {
+  color: var(--olive-green);
+  margin-right: 0.75rem;
+  margin-top: 0.2rem;
+  font-size: 1rem;
+  min-width: 16px;
+}
+
+/* Divider matching navbar shadow */
+.footer-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--olive-green), transparent);
+  margin: 2rem 0 1.5rem;
+  opacity: 0.4;
+}
+
+/* Bottom section */
+.footer-copyright {
+  margin: 0;
+  color: var(--dark-brown);
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.footer-legal {
+  text-align: right;
+}
+
+.footer-legal .footer-link {
+  font-size: 0.9rem;
+  color: var(--dark-brown);
+  opacity: 0.7;
+}
+
+.footer-legal .footer-link:hover {
+  color: var(--olive-green);
+  opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 0 1rem;
+  }
+  
+  .footer-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-text {
+    font-size: 0.9rem;
+  }
+  
+  .footer-legal {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .footer-legal .footer-link {
+    display: block;
+    margin: 0.5rem 0;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .contact-item {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer {
+    padding: 1.5rem 0 1rem;
+  }
+  
+  .social-links {
+    gap: 0.5rem;
+  }
+  
+  .social-link {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  
+  .footer-title {
+    font-size: 1rem;
+  }
+  
+  .footer-text,
+  .footer-link,
+  .contact-item {
+    font-size: 0.85rem;
+  }
+}

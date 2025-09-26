@@ -1,0 +1,47 @@
+/* Home Page Styles */
+:root {
+  --beige: #EDE0D4;
+  --olive-green: #6A994E;
+  --dark-brown: #432818;
+  --light-cream: #FEFAF6;
+}
+
+/* Search button styling */
+.search-btn {
+  background-color: transparent;
+  border: 2px solid var(--olive-green);
+  color: var(--olive-green);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.search-btn:hover {
+  background-color: var(--olive-green);
+  color: var(--light-cream);
+}
+
+/* View all button styling */
+.view-all-btn {
+  background-color: transparent;
+  border: 2px solid var(--olive-green);
+  color: var(--olive-green);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1.5rem;
+}
+
+.view-all-btn:hover {
+  background-color: var(--olive-green);
+  color: var(--light-cream);
+}
+
+/* Search input styling */
+.search-input {
+  border: 2px solid var(--beige);
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--olive-green);
+  box-shadow: 0 0 0 0.2rem rgba(106, 153, 78, 0.25);
+}

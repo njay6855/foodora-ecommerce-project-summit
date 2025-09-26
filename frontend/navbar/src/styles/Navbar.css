@@ -1,0 +1,146 @@
+/* Navba.navbar {
+  background-color: var(--beige) !important;
+  box-shadow: 0 2px 4px rgba(67, 40, 24, 0.1);
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  min-height: 80px;
+  z-index: 1030;
+}
+
+/* Add padding to body to prevent content from hiding under fixed navbar */
+body {
+  padding-top: calc(80px + 2rem); /* navbar height + padding */
+}s */
+:root {
+  --beige: #EDE0D4;
+  --olive-green: #6A994E;
+  --dark-brown: #432818;
+  --light-cream: #FEFAF6;
+}
+
+.navbar {
+  background-color: var(--beige) !important;
+  box-shadow: 0 2px 4px rgba(67, 40, 24, 0.1);
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  min-height: 70px;
+  z-index: 1030;
+}
+
+/* Ensure fixed navbar works properly */
+.navbar.fixed-top {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.navbar-brand {
+  color: var(--dark-brown) !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: color 0.2s ease;
+  position: relative;
+  padding-left: 45px; /* Space for logo */
+}
+
+.navbar-brand::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background-color: transparent; /* Placeholder for logo */
+  margin-right: 8px;
+  background-image: url('../assets/images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.navbar-brand:hover {
+  color: var(--olive-green) !important;
+}
+
+.nav-link {
+  color: var(--dark-brown) !important;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--olive-green) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--dark-brown);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(67, 40, 24, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Cart button styling */
+.cart-btn {
+  color: var(--dark-brown) !important;
+  transition: color 0.2s ease;
+}
+
+.cart-btn:hover {
+  color: var(--olive-green) !important;
+}
+
+.cart-badge {
+  background-color: var(--olive-green) !important;
+  border: 2px solid var(--beige);
+}
+
+/* Profile dropdown styling */
+.profile-btn {
+  color: var(--dark-brown) !important;
+  transition: color 0.2s ease;
+}
+
+.profile-btn:hover {
+  color: var(--olive-green) !important;
+}
+
+.dropdown-menu {
+  background-color: var(--light-cream);
+  border: none;
+  box-shadow: 0 4px 6px rgba(67, 40, 24, 0.1) !important;
+}
+
+.dropdown-item {
+  color: var(--dark-brown);
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--beige);
+  color: var(--olive-green);
+}
+
+.dropdown-header {
+  color: var(--dark-brown);
+}
+
+.dropdown-divider {
+  border-top-color: var(--beige);
+}
+
+/* Sign in button styling */
+.btn-signin {
+  background-color: transparent;
+  border: 2px solid var(--olive-green);
+  color: var(--olive-green);
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-signin:hover {
+  background-color: var(--olive-green);
+  color: var(--light-cream);
+}
