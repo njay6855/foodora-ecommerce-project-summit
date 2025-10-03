@@ -59,14 +59,13 @@ const getSupplierProducts = async (supplierId, params = {}) => {
       product.status !== 'Deactivated'
     );
 
-    // Apply pagination after filtering
     const page = params.page || 1;
     const limit = params.limit || 20;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
-    // Enrich products with category names
+   
     const enrichedProducts = await Promise.all(
       paginatedProducts.map(async (product) => {
         try {
@@ -80,12 +79,11 @@ const getSupplierProducts = async (supplierId, params = {}) => {
           return product;
         } catch (error) {
           console.error(`Error fetching category ${product.categoryId}:`, error.message);
-          return product; // Return product without category name if fetch fails
+          return product; 
         }
       })
     );
 
-    // Return with pagination metadata
     return {
       data: {
         data: enrichedProducts,

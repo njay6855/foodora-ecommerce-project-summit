@@ -11,7 +11,7 @@ const DataStewardDashboard = () => {
   const [error, setError] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const navigate = useNavigate();
-  const user = getCurrentUser(); // Get user from auth
+  const user = getCurrentUser(); 
 
   useEffect(() => {
     if (!user || user.role !== 'DataSteward') {

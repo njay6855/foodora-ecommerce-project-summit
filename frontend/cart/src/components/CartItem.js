@@ -27,7 +27,7 @@ const CartItem = ({ item, userId }) => {
   };
 
   const handleQuantityBlur = async (e) => {
-    // Update backend and Redux store when user finishes typing
+    
     const quantity = parseInt(e.target.value);
     if (quantity > 0 && quantity !== item.quantity) {
       try {
@@ -36,11 +36,9 @@ const CartItem = ({ item, userId }) => {
         dispatchCartUpdateEvent();
       } catch (error) {
         console.error('Failed to update quantity:', error);
-        // Reset to original quantity on error
         setLocalQuantity(item.quantity);
       }
     } else if (quantity <= 0) {
-      // Reset to original quantity if invalid
       setLocalQuantity(item.quantity);
     }
   };

@@ -9,17 +9,14 @@ export const initializeCartEvents = (getCurrentUser) => {
     try {
       const currentUser = getCurrentUser();
       if (!currentUser) {
-        // Redirect to login if user is not authenticated
         window.location.href = '/auth/login';
         return;
       }
 
       const { productId, quantity, product } = event.detail;
       
-      // First update the backend
       await cartService.addCartItem(currentUser.id, productId, quantity);
-
-      // If successful, update the Redux store
+      
       const store = getStore();
       store.dispatch(addItem({
         productId,

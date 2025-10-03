@@ -10,7 +10,6 @@ const getPendingProducts = async (params) => {
         }
     });
 
-    // Enrich each product with category name and supplier name
     if (productsResponse.data && productsResponse.data.data && Array.isArray(productsResponse.data.data)) {
         const enrichedProducts = await Promise.all(
             productsResponse.data.data.map(async (product) => {
