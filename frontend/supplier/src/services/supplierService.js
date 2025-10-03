@@ -1,107 +1,90 @@
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+// Import authAxios from auth MFE
+let authAxios;
+let authAxiosPromise;
 
-const getAuthHeaders = async () => {
-  try {
-    const { getCurrentUser } = await System.import('@food-ecommerce/auth');
-    const currentUser = getCurrentUser();
-    if (!currentUser) {
-      throw new Error('User not authenticated');
-    }
-    
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    };
-  } catch (error) {
-    console.error('Error getting auth headers:', error);
-    throw new Error('Authentication failed');
+const getAuthAxios = async () => {
+  if (!authAxiosPromise) {
+    authAxiosPromise = (async () => {
+      try {
+        const authModule = await System.import('@food-ecommerce/auth');
+        authAxios = authModule.authAxios;
+        return authAxios;
+      } catch (error) {
+        console.error('Failed to import authAxios from auth MFE:', error);
+        authAxiosPromise = null; // Reset promise to allow retry
+        throw new Error('Authentication service unavailable');
+      }
+    })();
   }
+  return authAxiosPromise;
 };
 
 export const supplierService = {
   async getSupplierProducts(supplierId) {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/suppliers/products`, {
-        headers
-      });
-      if (!response.ok) throw new Error('Failed to fetch products');
-      return await response.json();
-
+      const axios = await getAuthAxios();
+      const response = await axios.get('/suppliers/products');
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error fetching supplier products:', error);
+      throw new Error(error.response?.data?.message || 'Failed to fetch products');
     }
   },
 
   async addProduct(supplierId, productData) {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/suppliers/products`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(productData),
-      });
-      if (!response.ok) throw new Error('Failed to add product');
-      return await response.json();
+      const axios = await getAuthAxios();
+      const response = await axios.post('/suppliers/products', productData);
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error adding product:', error);
+      throw new Error(error.response?.data?.message || 'Failed to add product');
     }
   },
 
   async updateProduct(supplierId, productId, productData) {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/suppliers/products/${productId}`, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(productData),
-      });
-      if (!response.ok) throw new Error('Failed to update product');
-      return await response.json();
+      const axios = await getAuthAxios();
+      const response = await axios.put(`/suppliers/products/${productId}`, productData);
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error updating product:', error);
+      throw new Error(error.response?.data?.message || 'Failed to update product');
     }
   },
 
   async deleteProduct(supplierId, productId) {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/suppliers/products/${productId}`, {
-        method: 'DELETE',
-        headers
-      });
-      if (!response.ok) throw new Error('Failed to delete product');
-      return await response.json();
+      const axios = await getAuthAxios();
+      const response = await axios.delete(`/suppliers/products/${productId}`);
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error deleting product:', error);
+      throw new Error(error.response?.data?.message || 'Failed to delete product');
     }
   },
 
-  async updateProductStock(supplierId, productId, stockQuantity) {
+  async updateProductStock( supplierId, productId, stockQuantity) {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/suppliers/products/${productId}`, {
-        method: 'PATCH',
-        headers,
-        body: JSON.stringify({ quantity: stockQuantity }),
+      const axios = await getAuthAxios();
+      const response = await axios.patch(`/suppliers/products/${productId}`, { 
+        quantity: stockQuantity 
       });
-      if (!response.ok) throw new Error('Failed to update stock');
-      return await response.json();
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error updating product stock:', error);
+      throw new Error(error.response?.data?.message || 'Failed to update stock');
     }
   },
 
   async getCategories() {
     try {
-      const headers = await getAuthHeaders();
-      const response = await fetch(`${API_BASE_URL}/products/categories`, {
-        headers
-      });
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      return await response.json();
+      const axios = await getAuthAxios();
+      const response = await axios.get('/products/categories');
+      return response.data;
     } catch (error) {
-      throw error;
+      console.error('Error fetching categories:', error);
+      throw new Error(error.response?.data?.message || 'Failed to fetch categories');
     }
   }
 };

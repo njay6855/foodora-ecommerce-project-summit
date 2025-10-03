@@ -11,4 +11,5 @@ public class ApprovalStatusRequestDTO {
     @NotBlank
     private String status;  // "Approved" or "Rejected"
     private Long dataStewardId;
+    private String stewardNote;
 }

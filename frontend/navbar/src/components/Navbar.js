@@ -159,7 +159,7 @@ const Navbar = () => {
                         onClick={() => {
                           try {
                             logout();
-                            navigate('/');
+                            navigate('/auth/login');
                           } catch (error) {
                             console.error('Logout error:', error);
                           }

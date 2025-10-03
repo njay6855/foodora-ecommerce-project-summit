@@ -5,7 +5,7 @@ import { cartService } from '../services/cartService';
 export const initializeCartEvents = (getCurrentUser) => {
   // Handle add to cart events from other microfrontends
   const handleAddToCart = async (event) => {
-    console.log('Received add to cart event:', event);
+    
     try {
       const currentUser = getCurrentUser();
       if (!currentUser) {

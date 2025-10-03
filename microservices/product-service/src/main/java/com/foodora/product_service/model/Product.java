@@ -39,4 +39,6 @@ public class Product {
 
     private Long approvedDataStewardId;
 
+    private String stewardNote; 
+
 }

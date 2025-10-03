@@ -42,39 +42,6 @@ public class ProductServiceImpl implements ProductService {
         return dto;
     }
 
-  
-    @Override
-    public ProductListResponseDTO searchProducts(ProductSearchCriteriaDTO criteria, int page, int pageSize) {
-        logger.info("Searching products with criteria: {}, page: {}, pageSize: {}", criteria, page, pageSize);
-
-        try {
-            Pageable pageable = PageRequest.of(page - 1, pageSize);
-            Specification<Product> spec = ProductSpecification.withFilters(criteria);
-            Page<Product> productPage = productRepository.findAll(spec, pageable);
-
-            Page<ProductResponseDTO> dtoPage = productPage.map(ProductMapper::toDto);
-
-            ProductListResponseDTO.Meta meta = new ProductListResponseDTO.Meta(
-                    page,
-                    pageSize,
-                    dtoPage.getTotalElements(),
-                    dtoPage.getTotalPages()
-            );
-
-            ProductListResponseDTO response = ProductListResponseDTO.builder()
-                    .data(dtoPage.getContent())
-                    .meta(meta)
-                    .build();
-
-            logger.debug("Found {} products", dtoPage.getTotalElements());
-            return response;
-        } catch (Exception e) {
-            logger.error("Failed to search products", e);
-            throw new IllegalArgumentException("Failed to search products: " + e.getMessage());
-        }
-    }
-
-
     @Override
     @Transactional
     public ProductResponseDTO createProduct(CreateProductRequestDTO dto) {
@@ -86,17 +53,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         try {
-            Product product = Product.builder()
-                    .name(dto.getName())
-                    .description(dto.getDescription())
-                    .price(dto.getPrice())
-                    .quantity(dto.getQuantity())
-                    .categoryId(dto.getCategoryId())
-                    .supplierId(dto.getSupplierId())
-                    .status("Pending")
-                    .imageUrls(dto.getImageUrls())
-                    .build();
-
+            Product product = ProductMapper.fromCreateDto(dto);
             productRepository.save(product);
 
             ProductResponseDTO responseDTO = ProductMapper.toDto(product);
@@ -130,15 +87,7 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundException("Category not found");
         }
 
-        if (dto.getName() != null) product.setName(dto.getName());
-        if (dto.getDescription() != null) product.setDescription(dto.getDescription());
-        if (dto.getPrice() != null) product.setPrice(dto.getPrice());
-        if (dto.getQuantity() != null) product.setQuantity(dto.getQuantity());
-        if (dto.getStatus() != null) product.setStatus(dto.getStatus());
-        if (dto.getCategoryId() != null) product.setCategoryId(dto.getCategoryId());
-        if (dto.getImageUrls() != null) product.setImageUrls(dto.getImageUrls());
-
-        
+        ProductMapper.updateFromDto(product, dto);
 
         productRepository.save(product);
         ProductResponseDTO updatedDto = ProductMapper.toDto(product);
@@ -169,8 +118,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductListResponseDTO searchProducts(ProductSearchCriteriaDTO criteria, int page, int pageSize) {
+        logger.info("Searching products with criteria: {}, page: {}, pageSize: {}", criteria, page, pageSize);
+
+        try {
+            Pageable pageable = PageRequest.of(page - 1, pageSize);
+            Specification<Product> spec = ProductSpecification.withFilters(criteria);
+            Page<Product> productPage = productRepository.findAll(spec, pageable);
+
+            Page<ProductResponseDTO> dtoPage = productPage.map(ProductMapper::toDto);
+
+            ProductListResponseDTO.Meta meta = new ProductListResponseDTO.Meta(
+                    page,
+                    pageSize,
+                    dtoPage.getTotalElements(),
+                    dtoPage.getTotalPages()
+            );
+
+            ProductListResponseDTO response = ProductListResponseDTO.builder()
+                    .data(dtoPage.getContent())
+                    .meta(meta)
+                    .build();
+
+            logger.debug("Found {} products", dtoPage.getTotalElements());
+            return response;
+        } catch (Exception e) {
+            logger.error("Failed to search products", e);
+            throw new IllegalArgumentException("Failed to search products: " + e.getMessage());
+        }
+    }
+
+    @Override
     @Transactional
-    public ProductResponseDTO approveOrRejectProduct(Long productId, String status, Long dataStewardId) {
+    public ProductResponseDTO approveOrRejectProduct(Long productId, String status, Long dataStewardId, String stewardNote) {
         logger.info("Approving or rejecting product id: {} with status: {} by dataStewardId: {}", productId, status, dataStewardId);
 
         Product product = productRepository.findById(productId)
@@ -191,6 +171,7 @@ public class ProductServiceImpl implements ProductService {
 
         product.setStatus(status);
         product.setApprovedDataStewardId(dataStewardId);
+        product.setStewardNote(stewardNote);
         productRepository.save(product);
 
         ProductResponseDTO dto = ProductMapper.toDto(product);

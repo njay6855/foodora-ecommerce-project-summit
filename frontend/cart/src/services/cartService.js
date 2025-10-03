@@ -1,11 +1,31 @@
-import  authAxios  from './authAxios'
-
 const API_BASE_URL = '/carts';
+
+// Import authAxios from auth MFE
+let authAxios;
+let authAxiosPromise;
+
+const getAuthAxios = async () => {
+  if (!authAxiosPromise) {
+    authAxiosPromise = (async () => {
+      try {
+        const authModule = await System.import('@food-ecommerce/auth');
+        authAxios = authModule.authAxios;
+        return authAxios;
+      } catch (error) {
+        console.error('Failed to import authAxios from auth MFE:', error);
+        authAxiosPromise = null; // Reset promise to allow retry
+        throw new Error('Authentication service unavailable');
+      }
+    })();
+  }
+  return authAxiosPromise;
+};
 
 export const cartService = {
   async getCart(userId) {
     try {
-      const response = await authAxios.get(`${API_BASE_URL}/${userId}`);
+      const axios = await getAuthAxios();
+      const response = await axios.get(`${API_BASE_URL}/${userId}`);
       const cart = response.data;
       
       // Normalize cart items to include all required product information
@@ -21,9 +41,12 @@ export const cartService = {
     } catch (error) {
       return { items: [] };
     }
-  },  async updateCartItem(userId, itemId, quantity) {
+  },  
+  
+  async updateCartItem(userId, itemId, quantity) {
     try {
-      const response = await authAxios.patch(`${API_BASE_URL}/${userId}/items/${itemId}`, { quantity });
+      const axios = await getAuthAxios();
+      const response = await axios.patch(`${API_BASE_URL}/${userId}/items/${itemId}`, { quantity });
       return response.data;
     } catch (error) {
       throw error;
@@ -32,7 +55,8 @@ export const cartService = {
 
   async removeCartItem(userId, itemId) {
     try {
-      const response = await authAxios.delete(`${API_BASE_URL}/${userId}/items/${itemId}`);
+      const axios = await getAuthAxios();
+      const response = await axios.delete(`${API_BASE_URL}/${userId}/items/${itemId}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -41,7 +65,8 @@ export const cartService = {
 
   async clearCart(userId) {
     try {
-      const response = await authAxios.delete(`${API_BASE_URL}/${userId}`);
+      const axios = await getAuthAxios();
+      const response = await axios.delete(`${API_BASE_URL}/${userId}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -50,7 +75,8 @@ export const cartService = {
 
   async addCartItem(userId, productId, quantity) {
     try {
-      const response = await authAxios.post(`${API_BASE_URL}/${userId}`, { productId, quantity });
+      const axios = await getAuthAxios();
+      const response = await axios.post(`${API_BASE_URL}/${userId}`, { productId, quantity });
       return response.data;
     } catch (error) {
       throw error;

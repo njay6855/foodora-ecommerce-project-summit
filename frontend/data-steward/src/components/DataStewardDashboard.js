@@ -9,6 +9,7 @@ const DataStewardDashboard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const navigate = useNavigate();
   const user = getCurrentUser(); // Get user from auth
 
@@ -37,21 +38,34 @@ const DataStewardDashboard = () => {
     }
   };
 
-  const handleApprove = async (productId) => {
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type: '' });
+    }, 4000);
+  };
+
+  const handleApprove = async (productId, stewardNote) => {
     try {
-      await dataStewardService.approveProduct(productId);
+      const product = products.find(p => p.id === productId);
+      await dataStewardService.approveProduct(productId, stewardNote);
       setProducts(products.filter(p => p.id !== productId));
+      showToast(`Product "${product?.name || 'Unknown'}" has been approved successfully!`, 'success');
     } catch (err) {
       setError('Failed to approve product');
+      showToast('Failed to approve product. Please try again.', 'error');
     }
   };
 
-  const handleReject = async (productId) => {
+  const handleReject = async (productId, stewardNote) => {
     try {
-      await dataStewardService.rejectProduct(productId);
+      const product = products.find(p => p.id === productId);
+      await dataStewardService.rejectProduct(productId, stewardNote);
       setProducts(products.filter(p => p.id !== productId));
+      showToast(`Product "${product?.name || 'Unknown'}" has been rejected.`, 'success');
     } catch (err) {
       setError('Failed to reject product');
+      showToast('Failed to reject product. Please try again.', 'error');
     }
   };
 
@@ -69,6 +83,18 @@ const DataStewardDashboard = () => {
     <div className="steward-container">
       <div className="container">
         <h2 className="steward-header">Products Pending Review</h2>
+
+        {/* Toast Notification */}
+        {toast.show && (
+          <div className={`steward-toast steward-toast-${toast.type}`}>
+            <div className="toast-content">
+              <span className="toast-icon">
+                {toast.type === 'success' ? '✓' : '⚠'}
+              </span>
+              <span className="toast-message">{toast.message}</span>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="steward-error">

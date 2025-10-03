@@ -62,7 +62,7 @@ public class ProductController extends BaseController {
             @PathVariable Long productId,
             @RequestBody ApprovalStatusRequestDTO request) {
         logRequest("approveOrRejectProduct", String.format("productId=%d, status=%s", productId, request.getStatus()));
-        productService.approveOrRejectProduct(productId, request.getStatus(), request.getDataStewardId());
+        productService.approveOrRejectProduct(productId, request.getStatus(), request.getDataStewardId(), request.getStewardNote());
         return noContent();
     }
 

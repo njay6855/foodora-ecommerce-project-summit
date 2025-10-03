@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {  useDispatch } from 'react-redux';
 import { updateItem, removeItem } from '../store/cartSlice';
 import { cartService } from '../services/cartService';
@@ -20,17 +20,28 @@ const dispatchCartUpdateEvent = () => {
 
 const CartItem = ({ item, userId }) => {
   const dispatch = useDispatch();
+  const [localQuantity, setLocalQuantity] = useState(item.quantity);
 
-  const handleQuantityChange = async (e) => {
+  const handleQuantityInput = (e) => {
+    setLocalQuantity(e.target.value);
+  };
+
+  const handleQuantityBlur = async (e) => {
+    // Update backend and Redux store when user finishes typing
     const quantity = parseInt(e.target.value);
-    if (quantity > 0) {
+    if (quantity > 0 && quantity !== item.quantity) {
       try {
         await cartService.updateCartItem(userId, item.itemId, quantity);
         dispatch(updateItem({ productId: item.productId, quantity }));
         dispatchCartUpdateEvent();
       } catch (error) {
         console.error('Failed to update quantity:', error);
+        // Reset to original quantity on error
+        setLocalQuantity(item.quantity);
       }
+    } else if (quantity <= 0) {
+      // Reset to original quantity if invalid
+      setLocalQuantity(item.quantity);
     }
   };
 
@@ -71,8 +82,9 @@ const CartItem = ({ item, userId }) => {
                 <input
                   type="number"
                   className="cart-item-quantity"
-                  value={item.quantity}
-                  onChange={handleQuantityChange}
+                  value={localQuantity}
+                  onChange={handleQuantityInput}
+                  onBlur={handleQuantityBlur}
                   min="1"
                 />
               </div>

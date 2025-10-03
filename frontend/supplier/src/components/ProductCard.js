@@ -6,7 +6,7 @@ const ProductCard = ({ product: initialProduct, onEdit, onDelete, onUpdateStock 
   const [product, setProduct] = useState(initialProduct);
   const [localQuantity, setLocalQuantity] = useState(initialProduct.quantity);
   const [isUpdating, setIsUpdating] = useState(false);
-
+  
   useEffect(() => {
     setProduct(initialProduct);
     setLocalQuantity(initialProduct.quantity);
@@ -19,12 +19,21 @@ const ProductCard = ({ product: initialProduct, onEdit, onDelete, onUpdateStock 
       try {
         const result = await onUpdateStock(product.id, newStock);
         if (typeof result === 'object' && result !== null) {
-          setProduct(result);
-          setLocalQuantity(result.quantity);
-        } 
-
+          
+          setProduct(prevProduct => ({
+            ...prevProduct,
+            ...result,
+            categoryName: result.categoryName || prevProduct.categoryName
+          }));
+          setLocalQuantity(result.quantity || newStock);
+        } else {
+          setProduct(prevProduct => ({
+            ...prevProduct,
+            quantity: newStock
+          }));
+          setLocalQuantity(newStock);
+        }
       } catch (error) {
-        // Revert on error
         setLocalQuantity(product.quantity);
       } finally {
         setIsUpdating(false);
@@ -68,12 +77,29 @@ const ProductCard = ({ product: initialProduct, onEdit, onDelete, onUpdateStock 
                 : 'Pending Approval'}
             </span>
           </div>
-          
-          <p className="product-card-text">{product.description}</p>
-          
-          <div className="product-detail">
-            <span className="product-detail-label">Price:</span>
-            <span>${product.price.toFixed(2)}</span>
+
+          <div className="product-content-row">
+            <div className="product-details-column">
+              <p className="product-card-text">{product.description}</p>
+              
+              <div className="product-detail">
+                <span className="product-detail-label">Price:</span>
+                <span>${product.price.toFixed(2)}</span>
+              </div>
+            </div>
+
+      
+            <div className="note-column">
+              {(product.status === 'Approved' || product.status === 'Rejected') && product.stewardNote && (
+                <div className={`data-steward-note-side ${product.status === 'Rejected' ? 'data-steward-note-rejected' : ''}`}>
+                  <div className="data-steward-note-header-side">
+                    <i className="fas fa-user-tie"></i>
+                    <span className="note-title-side">Data Steward Note:</span>
+                  </div>
+                  <p className="note-content-side">{product.stewardNote}</p>
+                </div>
+              )}
+            </div>
           </div>
           
           <div className="supplier-form-group">
@@ -104,7 +130,7 @@ const ProductCard = ({ product: initialProduct, onEdit, onDelete, onUpdateStock 
                     e.preventDefault();
                   }
                   if (e.key === 'Enter') {
-                    e.target.blur(); // Will trigger onBlur
+                    e.target.blur(); 
                   }
                 }}
                 min="0"

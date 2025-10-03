@@ -66,10 +66,29 @@ const getSupplierProducts = async (supplierId, params = {}) => {
     const endIndex = startIndex + limit;
     const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
+    // Enrich products with category names
+    const enrichedProducts = await Promise.all(
+      paginatedProducts.map(async (product) => {
+        try {
+          if (product.categoryId) {
+            const categoryResponse = await axios.get(`${productServiceUrl}/api/v1/products/categories/${product.categoryId}`);
+            return {
+              ...product,
+              categoryName: categoryResponse.data.name
+            };
+          }
+          return product;
+        } catch (error) {
+          console.error(`Error fetching category ${product.categoryId}:`, error.message);
+          return product; // Return product without category name if fetch fails
+        }
+      })
+    );
+
     // Return with pagination metadata
     return {
       data: {
-        data: paginatedProducts,
+        data: enrichedProducts,
         pagination: {
           total: filteredProducts.length,
           page: page,

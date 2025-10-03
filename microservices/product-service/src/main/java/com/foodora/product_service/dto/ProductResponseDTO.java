@@ -20,4 +20,5 @@ public class ProductResponseDTO {
     private Long supplierId;
     private Long approvedDataStewardId;
     private List<String> imageUrls;
+    private String stewardNote;
 }

@@ -1,6 +1,8 @@
 package com.foodora.product_service.mapper;
 
+import com.foodora.product_service.dto.CreateProductRequestDTO;
 import com.foodora.product_service.dto.ProductResponseDTO;
+import com.foodora.product_service.dto.UpdateProductRequestDTO;
 import com.foodora.product_service.model.Product;
 
 public class ProductMapper {
@@ -17,6 +19,30 @@ public class ProductMapper {
                 .supplierId(product.getSupplierId())
                 .approvedDataStewardId(product.getApprovedDataStewardId())
                 .imageUrls(product.getImageUrls())
+                .stewardNote(product.getStewardNote())
                 .build();
+    }
+
+    public static Product fromCreateDto(CreateProductRequestDTO dto) {
+        return Product.builder()
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .quantity(dto.getQuantity())
+                .categoryId(dto.getCategoryId())
+                .supplierId(dto.getSupplierId())
+                .status("Pending")
+                .imageUrls(dto.getImageUrls())
+                .build();
+    }
+
+    public static void updateFromDto(Product product, UpdateProductRequestDTO dto) {
+        if (dto.getName() != null) product.setName(dto.getName());
+        if (dto.getDescription() != null) product.setDescription(dto.getDescription());
+        if (dto.getPrice() != null) product.setPrice(dto.getPrice());
+        if (dto.getQuantity() != null) product.setQuantity(dto.getQuantity());
+        if (dto.getStatus() != null) product.setStatus(dto.getStatus());
+        if (dto.getCategoryId() != null) product.setCategoryId(dto.getCategoryId());
+        if (dto.getImageUrls() != null) product.setImageUrls(dto.getImageUrls());
     }
 }

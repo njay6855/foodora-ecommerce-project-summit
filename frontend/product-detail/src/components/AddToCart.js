@@ -3,27 +3,46 @@ import '../styles/AddToCart.css';
 
 const AddToCart = ({ product, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
+  const [localQuantity, setLocalQuantity] = useState('1'); 
   const [addedToCart, setAddedToCart] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Listen for successful cart updates
+  useEffect(() => {
+    const handleCartUpdate = (event) => {
+      setAddedToCart(true);
+      setShowToast(true);
+      
+      setTimeout(() => setAddedToCart(false), 2000);
+      
+      setTimeout(() => setShowToast(false), 3000);
+    };
+
+    window.addEventListener('@food-ecommerce/cart-updated', handleCartUpdate);
+    return () => {
+      window.removeEventListener('@food-ecommerce/cart-updated', handleCartUpdate);
+    };
+  }, []);
 
 
-    // Listen for successful cart updates
-    useEffect(() => {
-        const handleCartUpdate = (event) => {
-        setAddedToCart(true);
-        setTimeout(() => setAddedToCart(false), 3000); 
-        };
+  const handleQuantityInput = (e) => {
+    setLocalQuantity(e.target.value);
+  };
 
-        window.addEventListener('@food-ecommerce/cart-updated', handleCartUpdate);
-        return () => {
-        window.removeEventListener('@food-ecommerce/cart-updated', handleCartUpdate);
-        };
-    }, []);
-
-
-  const handleQuantityChange = (e) => {
+  const handleQuantityBlur = (e) => {
+    
     const value = parseInt(e.target.value);
     if (value > 0 && value <= product.quantity) {
       setQuantity(value);
+      setLocalQuantity(value.toString());
+    } else {
+      setLocalQuantity(quantity.toString());
+    }
+  };
+
+  const handleQuantityKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleQuantityBlur(e);
     }
   };
 
@@ -39,8 +58,6 @@ const AddToCart = ({ product, onAddToCart }) => {
       }
     };
     
-    //console.log('Dispatching add to cart event:', eventDetail);
-    
     // Dispatch custom event for cart microfrontend
     window.dispatchEvent(
       new CustomEvent('@food-ecommerce/add-to-cart', {
@@ -54,13 +71,27 @@ const AddToCart = ({ product, onAddToCart }) => {
 
   return (
     <div className="add-to-cart-container">
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="cart-toast">
+          <div className="toast-content">
+            <span className="toast-icon">✓</span>
+            <span className="toast-message">
+              <strong>{product.name}</strong> added to cart!
+            </span>
+          </div>
+        </div>
+      )}
+      
       <div className="add-to-cart-input-group input-group">
         <span className="input-group-text">Quantity</span>
         <input
           type="number"
           className="form-control"
-          value={quantity}
-          onChange={handleQuantityChange}
+          value={localQuantity}
+          onChange={handleQuantityInput}
+          onBlur={handleQuantityBlur}
+          onKeyPress={handleQuantityKeyPress}
           min="1"
           max={product.quantity}
         />

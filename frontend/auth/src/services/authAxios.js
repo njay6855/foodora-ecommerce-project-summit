@@ -14,6 +14,8 @@ const publicRoutes = [
   '/api/v1/users/login',
   '/api/v1/users/register',
   '/api/v1/users/auth/forgot-password',
+  '/api/v1/products/*',
+  '/api/v1/categories/*'
 ];
 
 // Request interceptor to add auth token only for protected routes

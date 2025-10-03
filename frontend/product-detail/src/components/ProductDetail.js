@@ -25,8 +25,7 @@ const ProductDetail = () => {
     try {
       const productData = await productDetailService.getProductById(productId);
       setProduct(productData);
-      console.log('Product Data:', productData);
-
+      
       // Load related products
       if (productData.categoryId) {
         const relatedData = await productDetailService.getRelatedProducts(

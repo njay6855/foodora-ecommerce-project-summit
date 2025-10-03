@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import '../styles/CartPage.css';
@@ -43,7 +44,19 @@ const CartPage = () => {
   };
 
   const handleClearCart = async () => {
-    if (window.confirm('Are you sure you want to clear your cart?')) {
+    const result = await Swal.fire({
+      title: 'Clear Cart?',
+      text: 'Are you sure you want to remove all items from your cart?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, clear cart',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        popup: 'cart-swal'
+      }
+    });
+
+    if (result.isConfirmed) {
       try {
         await cartService.clearCart(user.id);
         dispatch(clearCart());
@@ -52,8 +65,28 @@ const CartPage = () => {
             count: 0
           }
         }));
+        
+        Swal.fire({
+          title: 'Cart Cleared!',
+          text: 'All items have been removed from your cart.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'cart-swal'
+          }
+        });
       } catch (error) {
         dispatch(setError('Failed to clear cart'));
+        
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to clear cart. Please try again.',
+          icon: 'error',
+          customClass: {
+            popup: 'cart-swal'
+          }
+        });
       }
     }
   };

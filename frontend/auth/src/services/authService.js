@@ -59,6 +59,7 @@ export const authService = {
     
     // Dispatch event for other microfrontends
     window.dispatchEvent(new CustomEvent('@food-ecommerce/user-logged-out'));
+    
   },
 
   getCurrentUser() {

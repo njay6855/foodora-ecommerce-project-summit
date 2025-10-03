@@ -22,7 +22,7 @@ const reviewProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
         const dataStewardId = req.user.userId;
-        const { status } = req.body;
+        const { status, stewardNote } = req.body;
 
         // Validate status
         if (!['Approved', 'Rejected'].includes(status)) {
@@ -33,7 +33,8 @@ const reviewProduct = async (req, res) => {
 
         const response = await dataStewardService.reviewProduct(productId, {
             status,
-            dataStewardId
+            dataStewardId,
+            stewardNote
         });
 
         res.json({

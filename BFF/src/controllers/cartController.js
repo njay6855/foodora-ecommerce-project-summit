@@ -4,7 +4,7 @@ const { handleMicroserviceError } = require('../utils/errorHandler');
 
 const getCart = async (req, res) => {
   try {
-    const userId = req.params.userId; // from route param
+    const userId = req.params.userId; 
     const response = await cartService.getActiveCartByUserId(userId);
     res.json(response.data);
   } catch (err) {
@@ -15,8 +15,8 @@ const getCart = async (req, res) => {
 
 const addItem = async (req, res) => {
   try {
-    const userId = req.params.userId; // from route param
-    const itemData = req.body; // { productId, quantity }
+    const userId = req.params.userId; 
+    const itemData = req.body;
     const response = await cartService.addItemToCart(userId, itemData);
     res.json(response.data);
   } catch (err) {

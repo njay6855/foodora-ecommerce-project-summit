@@ -11,7 +11,6 @@ const ProductGallery = ({ imageUrls }) => {
       </div>
     );
   }
-  console.log(imageUrls.length)
   const galleryItems = imageUrls.map(url => ({
     original: url,
     thumbnail: url,

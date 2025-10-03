@@ -1,0 +1,15 @@
+{
+  "name": "food-ecommerce-frontend",
+  "version": "1.0.0",
+  "description": "Food E-commerce Microfrontend Application",
+  "scripts": {
+    "start": "start-mfes.bat",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0"
+  }
+}

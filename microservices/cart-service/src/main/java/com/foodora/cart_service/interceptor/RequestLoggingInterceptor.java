@@ -2,7 +2,7 @@ package com.foodora.cart_service.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
