@@ -60,10 +60,12 @@ const getSupplierProducts = async (supplierId, params = {}) => {
     );
 
     const page = params.page || 1;
-    const limit = params.limit || 20;
+    const limit = params.limit || 100;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+    console.log(limit, 'products per page, returning page', page);
 
    
     const enrichedProducts = await Promise.all(
@@ -83,6 +85,8 @@ const getSupplierProducts = async (supplierId, params = {}) => {
         }
       })
     );
+
+    console.log(filteredProducts.length, 'products found for supplier', supplierId);
 
     return {
       data: {

@@ -1,22 +1,4 @@
 describe('Add to Cart and Cart Page', () => {
-  // NOTE: Quantity inputs use onBlur events for updates
-  // Always use .blur() after .type() to trigger quantity changes
-  
-  // Helper function to update quantity with robust approach
-  function updateQuantityRobustly(selector, newValue) {
-    cy.get(selector)
-      .should('be.visible')
-      .focus()
-      .clear()
-      .type(newValue.toString(), { delay: 100 })
-      .blur()
-      
-    // Verify the value was set
-    cy.get(selector).should('have.value', newValue.toString())
-    
-    // Wait for any async operations
-    cy.wait(2000)
-  }
   
   beforeEach(() => {
     // Visit homepage and wait for loading
@@ -35,7 +17,6 @@ describe('Add to Cart and Cart Page', () => {
 
   // Helper function to login user
   function loginUser() {
-    // Navigate to login page
     cy.get('body').then(($body) => {
       if ($body.find('a:contains("Login"), .login-btn, a[href*="login"]').length > 0) {
         cy.get('a:contains("Login"), .login-btn, a[href*="login"]').first().click()
@@ -55,7 +36,6 @@ describe('Add to Cart and Cart Page', () => {
     
     cy.wait(3000)
     
-    // Verify login success (should redirect away from login page)
     cy.url().should('not.include', '/auth/login')
   }
 
@@ -75,31 +55,27 @@ describe('Add to Cart and Cart Page', () => {
 
     cy.wait(3000)
 
-    // Verify we're on product detail page
     cy.url().should('include', '/product/')
 
-    // Check if add to cart section is visible
     cy.get('.add-to-cart-container, .add-to-cart-btn, button:contains("Add to Cart")').should('exist')
 
-    // Set quantity (optional - default is usually 1)
+    // Set quantity
     cy.get('body').then(($body) => {
       if ($body.find('input[type="number"]').length > 0) {
         cy.get('input[type="number"]')
-          .focus() // Explicitly focus
+          .focus() 
           .clear()
-          .type('2', { delay: 100 }) // Add delay
-          .blur() // Trigger onBlur event
+          .type('2', { delay: 100 }) 
+          .blur() 
           
         // Verify the quantity was set
         cy.get('input[type="number"]').should('have.value', '2')
-        cy.wait(1000) // Wait for any validation
+        cy.wait(1000)
       }
     })
 
-    // Click add to cart button
     cy.get('.add-to-cart-btn, button:contains("Add to Cart")').click()
 
-    // Verify success message or button state change
     cy.get('body').then(($body) => {
       if ($body.text().includes('Added to Cart')) {
         cy.get('body').should('contain.text', 'Added to Cart')
@@ -171,17 +147,15 @@ describe('Add to Cart and Cart Page', () => {
         // Get initial quantity and total
         cy.get('.cart-item-quantity, .cart-item input[type="number"]').first().then(($input) => {
           const initialQuantity = parseInt($input.val())
-          const newQuantity = initialQuantity + 2 // Increase by 2 to ensure noticeable change
+          const newQuantity = initialQuantity + 2 
           
           cy.get('.cart-summary-total, .total-amount').invoke('text').then((initialTotal) => {
-            // More robust quantity update approach
             cy.get('.cart-item-quantity, .cart-item input[type="number"]').first()
-              .focus() // Explicitly focus first
+              .focus()
               .clear()
-              .type(newQuantity.toString(), { delay: 100 }) // Add delay between keystrokes
-              .blur() // Trigger blur event
+              .type(newQuantity.toString(), { delay: 100 }) 
+              .blur() 
               
-            // Wait for API call and DOM update
             cy.wait(4000)
             
             // Verify the input value was actually updated
@@ -203,26 +177,21 @@ describe('Add to Cart and Cart Page', () => {
   })
 
   it('should remove products from cart', () => {
-    // First add a product to cart
+    
     addProductToCart()
     
-    // Navigate to cart page
     cy.visit('/cart')
     cy.wait(3000)
 
-    // Check if cart has items
     cy.get('body').then(($body) => {
       if ($body.find('.cart-item').length > 0) {
-        // Count initial items
         cy.get('.cart-item').then(($items) => {
           const initialCount = $items.length
 
-          // Remove first item
           cy.get('.cart-item-remove, .cart-item button:contains("Remove")').first().click()
 
           cy.wait(2000)
 
-          // Verify item count decreased or show empty message
           if (initialCount > 1) {
             cy.get('.cart-item').should('have.length', initialCount - 1)
           } else {
@@ -242,20 +211,19 @@ describe('Add to Cart and Cart Page', () => {
   })
 
   it('should verify cart total updates correctly', () => {
-    // First add a product to cart
+
     addProductToCart()
-    
-    // Navigate to cart page
+
     cy.visit('/cart')
     cy.wait(3000)
 
     cy.get('body').then(($body) => {
       if ($body.find('.cart-item').length > 0) {
-        // Check subtotal calculation
+        
         let calculatedSubtotal = 0
         
         cy.get('.cart-item').each(($item) => {
-          // Extract price and quantity for each item
+          
           cy.wrap($item).find('.cart-item-unit-price, .price').invoke('text').then((priceText) => {
             const price = parseFloat(priceText.replace('$', '').replace(' per unit', ''))
             
@@ -282,9 +250,9 @@ describe('Add to Cart and Cart Page', () => {
             .type(newQty.toString(), { delay: 100 })
             .blur()
             
-          // Verify the input value updated
+         
           cy.wrap($input).should('have.value', newQty.toString())
-          cy.wait(3000) // Wait longer for API update
+          cy.wait(3000) 
 
           // Verify totals have updated
           cy.get('.cart-summary-total, .total-amount').should('be.visible')
@@ -297,23 +265,20 @@ describe('Add to Cart and Cart Page', () => {
   })
 
   it('should clear entire cart', () => {
-    // First add a product to cart
-    addProductToCart()
     
-    // Navigate to cart page
+    addProductToCart()
+
     cy.visit('/cart')
     cy.wait(3000)
 
     cy.get('body').then(($body) => {
       if ($body.find('.cart-item').length > 0) {
-        // Click clear cart button
+       
         cy.get('.cart-clear-btn, button:contains("Clear Cart")').click()
 
-        // Handle SweetAlert2 confirmation
         cy.get('.swal2-confirm, button:contains("Yes")').click()
         cy.wait(2000)
 
-        // Verify cart is empty
         cy.get('body').should(($body) => {
           const text = $body.text()
           expect(text).to.satisfy((text) => {

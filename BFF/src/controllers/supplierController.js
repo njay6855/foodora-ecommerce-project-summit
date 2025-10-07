@@ -53,7 +53,7 @@ const deleteProduct = async (req, res) => {
 const getSupplierProducts = async (req, res) => {
   try {
     const supplierId = req.user.userId; // Get supplierId from JWT token
-    const { status, page = 1, limit = 10 } = req.query;
+    const { status, page = 1, limit = 100 } = req.query;
 
     const response = await supplierService.getSupplierProducts(supplierId, {
       supplierId,
