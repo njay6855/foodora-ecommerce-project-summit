@@ -44,32 +44,18 @@ const deleteProduct = (productId, supplierId) => {
 };
 
 const getSupplierProducts = async (supplierId, params = {}) => {
-  // GET /api/v1/products with supplier filter
+  // GET /api/v1/products with supplier filter - microservice handles pagination
   const response = await axios.get(`${productServiceUrl}/api/v1/products`, {
     params: {
       ...params,
-      supplierId,
-      pageSize: 1000 
+      supplierId
     }
   });
 
-  // Filter out deactivated products and apply pagination in memory
+  // Enrich products with category data
   if (response.data && response.data.data) {
-    const filteredProducts = response.data.data.filter(product => 
-      product.status !== 'Deactivated'
-    );
-
-    const page = params.page || 1;
-    const limit = params.limit || 100;
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
-    console.log(limit, 'products per page, returning page', page);
-
-   
     const enrichedProducts = await Promise.all(
-      paginatedProducts.map(async (product) => {
+      response.data.data.map(async (product) => {
         try {
           if (product.categoryId) {
             const categoryResponse = await axios.get(`${productServiceUrl}/api/v1/products/categories/${product.categoryId}`);
@@ -86,17 +72,11 @@ const getSupplierProducts = async (supplierId, params = {}) => {
       })
     );
 
-    console.log(filteredProducts.length, 'products found for supplier', supplierId);
-
+    console.log(response.data.meta)
     return {
       data: {
         data: enrichedProducts,
-        pagination: {
-          total: filteredProducts.length,
-          page: page,
-          limit: limit,
-          totalPages: Math.ceil(filteredProducts.length / limit)
-        }
+        meta: response.data.meta // Pass through pagination metadata from microservice
       }
     };
   }

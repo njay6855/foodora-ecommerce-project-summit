@@ -58,7 +58,7 @@ const getSupplierProducts = async (req, res) => {
     const response = await supplierService.getSupplierProducts(supplierId, {
       supplierId,
       page,
-      limit
+      pageSize: limit,
     });
 
     res.json(response.data);

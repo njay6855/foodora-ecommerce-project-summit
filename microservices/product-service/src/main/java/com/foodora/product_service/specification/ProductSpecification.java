@@ -15,6 +15,9 @@ public class ProductSpecification {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            // Always exclude deactivated products
+            predicates.add(cb.notEqual(root.get("status"), "Deactivated"));
+
             if (criteria.getName() != null && !criteria.getName().isEmpty()) {
                 predicates.add(cb.like(cb.lower(root.get("name")), "%" + criteria.getName().toLowerCase() + "%"));
             }
