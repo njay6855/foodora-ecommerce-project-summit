@@ -7,7 +7,7 @@ import '../styles/supplier.css';
 
 const SupplierDashboard = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
@@ -31,57 +31,67 @@ const SupplierDashboard = () => {
       navigate('/auth/login');
       return;
     }
+    loadAllProducts();
     loadProducts();
   }, []);
 
   useEffect(() => {
     if (isReturningFromForm) {
-      loadProducts();
+      loadAllProducts();
+      loadProducts(statusFilter);
       setIsReturningFromForm(false);
     }
   }, [isReturningFromForm]);
 
-  const loadProducts = async () => {
+  const loadAllProducts = async () => {
+    try {
+      const response = await supplierService.getSupplierProducts(user.id);
+      // Handle nested data structure from BFF
+      const productList = response.data?.data || response.data || response;
+      const validProducts = Array.isArray(productList) ? productList : [];
+      setAllProducts(validProducts);
+    } catch (err) {
+      console.error('Failed to load all products for counts:', err);
+    }
+  };
+
+  const loadProducts = async (status = 'all') => {
     setLoading(true);
     setError(null);
     try {
-      const response = await supplierService.getSupplierProducts(user.id);
-      const productList = response.data ;
+      const params = status && status !== 'all' ? { status: mapStatusFilter(status) } : {};
+      console.log('Loading products with params:', params); // Debug log
+      const response = await supplierService.getSupplierProducts(user.id, params);
+      console.log('Response received:', response); // Debug log
+      // Handle nested data structure from BFF
+      const productList = response.data?.data || response.data || response;
       const validProducts = Array.isArray(productList) ? productList : [];
+      console.log('Valid products:', validProducts); // Debug log
       setProducts(validProducts);
-      filterProducts(validProducts, statusFilter);
     } catch (err) {
       setError('Failed to load products');
       setProducts([]);
-      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filterProducts = (productList, filter) => {
-    let filtered;
+  const mapStatusFilter = (filter) => {
     switch (filter) {
       case 'approved':
-        filtered = productList.filter(product => product.status === 'Approved');
-        break;
+        return 'Approved';
       case 'pending':
-        filtered = productList.filter(product => 
-          product.status === 'Pending' || product.status === 'Pending Approval'
-        );
-        break;
+        return 'Pending';
       case 'rejected':
-        filtered = productList.filter(product => product.status === 'Rejected');
-        break;
+        return 'Rejected';
       default:
-        filtered = productList;
+        return null;
     }
-    setFilteredProducts(filtered);
   };
 
   const handleStatusFilterChange = (filter) => {
     setStatusFilter(filter);
-    filterProducts(products, filter);
+    loadProducts(filter);
   };
 
   const handleAddProduct = async (productData) => {
@@ -97,11 +107,12 @@ const SupplierDashboard = () => {
   };
 
   const getProductCounts = () => {
+    const productList = allProducts.length > 0 ? allProducts : products;
     const counts = {
-      all: products.length,
-      approved: products.filter(p => p.status === 'Approved').length,
-      pending: products.filter(p => p.status === 'Pending' || p.status === 'Pending Approval').length,
-      rejected: products.filter(p => p.status === 'Rejected').length
+      all: productList.length,
+      approved: productList.filter(p => p.status === 'Approved').length,
+      pending: productList.filter(p => p.status === 'Pending' || p.status === 'Pending Approval').length,
+      rejected: productList.filter(p => p.status === 'Rejected').length
     };
     return counts;
   };
@@ -251,7 +262,7 @@ const SupplierDashboard = () => {
         )}
 
         <div className="row">
-          {filteredProducts.map(product => (
+          {products.map(product => (
             <ProductCard
               key={product.id}
               product={product}
@@ -262,17 +273,19 @@ const SupplierDashboard = () => {
           ))}
         </div>
 
-        {filteredProducts.length === 0 && !error && products.length > 0 && (
+        {products.length === 0 && !error && allProducts.length > 0 && (
           <div className="empty-state">
             <p>No products found for the selected status.</p>
           </div>
         )}
 
-        {products.length === 0 && !error && (
+        {allProducts.length === 0 && products.length === 0 && !error && (
           <div className="empty-state">
             <p>No products found. Start by adding a new product.</p>
           </div>
         )}
+
+
       </div>
     </div>
   );

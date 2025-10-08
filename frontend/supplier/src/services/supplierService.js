@@ -20,10 +20,10 @@ const getAuthAxios = async () => {
 };
 
 export const supplierService = {
-  async getSupplierProducts(supplierId) {
+  async getSupplierProducts(supplierId, params = {}) {
     try {
       const axios = await getAuthAxios();
-      const response = await axios.get('/suppliers/products');
+      const response = await axios.get('/suppliers/products', { params });
       return response.data;
     } catch (error) {
       console.error('Error fetching supplier products:', error);
